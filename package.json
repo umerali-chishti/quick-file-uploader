@@ -13,7 +13,7 @@
     "quick file uploader"
   ],
   "author": "Umer Ali Chishti <umeralichishti06@gmail.com>",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.1240.0"
   }

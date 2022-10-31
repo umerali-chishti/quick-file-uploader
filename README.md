@@ -1,5 +1,7 @@
 
-[![npm version](https://badge.fury.io/js/quick-file-uploader.svg)](https://badge.fury.io/js/quick-file-uploader)
+<p align="center">
+<a href="https://www.npmjs.com/package/quick-file-uploader"><img alt="npm" src="https://img.shields.io/npm/v/quick-file-uploader"></a>
+</p>
 
 # Quick File Uploader
 
@@ -67,4 +69,8 @@ you can customise file input, preview, error and success messages base on your d
      ```js
     import  Upload from 'quick-file-uploader'
     new Upload({storage: 's3'});
+
+## License
+
+[MIT license](https://opensource.org/licenses/MIT).
 
