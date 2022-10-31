@@ -2,7 +2,7 @@
   "name": "quick-file-uploader",
   "version": "1.0.10",
   "description": "Quick file uploader for s3, html form submission and XMLHttpRequest",
-  "main": "lib/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
