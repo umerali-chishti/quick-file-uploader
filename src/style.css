@@ -1,0 +1,51 @@
+div#upload-container[data-dragged="true"] {
+    border: 2px solid purple;
+}
+div#upload-container{
+    cursor: pointer;
+    border: 2px dashed #abcaff;
+    /*border-radius: 10px;*/
+    width: 480px;
+    padding: 20px;
+    text-align: center;
+    color: #c4c3c4;
+}
+div#upload-container:after {
+    content:'Drop your file here or Click to browse';
+}
+div#upload-container[data-dragged="true"]:after {
+    content:'Leave your file here';
+}
+div#preview-container {
+    width:480px;
+    padding:10px;
+    background:#f6f6f6;
+    /*border-radius:10px;*/
+    overflow:auto;
+    display: flex;
+    position: relative;
+    text-align: center;
+}
+div#preview-container > .poster-wrapper{
+    display:inline-block;
+}
+
+#preview-container img,
+#preview-container video
+{
+    width: 150px;
+    height:100px;
+    margin:0 5px;
+    display: block;
+}
+#preview-container .remove-poster {
+    text-decoration: underline;
+    color: red;
+    font-size: 14px;
+}
+.poster-wrapper > progress{
+    width: 150px;
+    display: block;
+    margin: 0 auto;
+    height: 5px;
+}

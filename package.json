@@ -1,0 +1,20 @@
+{
+  "name": "quick-file-uploader",
+  "version": "1.0.8",
+  "description": "Quick file uploader for s3, html form submission and XMLHttpRequest",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "s3",
+    "s3 file uploader",
+    "file uploader",
+    "quick file uploader"
+  ],
+  "author": "Umer Ali Chishti <umeralichishti06@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1240.0"
+  }
+}
