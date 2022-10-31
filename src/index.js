@@ -137,9 +137,6 @@ class Upload {
             progressBar = document.querySelector('#progress-bar-'+fileNumber);
         }
         progressBar.children[0].value = progress
-        if(progress == 100){
-            // setTimeout(()=> progressBar.querySelector('progress').remove(), 500);
-        }
     }
 
     errorMessage(errors, fileNumber){
