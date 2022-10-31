@@ -1,7 +1,6 @@
 
-<p align="center">
 <a href="https://www.npmjs.com/package/quick-file-uploader"><img alt="npm" src="https://img.shields.io/npm/v/quick-file-uploader"></a>
-</p>
+
 
 # Quick File Uploader
 
