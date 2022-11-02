@@ -49,8 +49,9 @@ class Upload {
 
     events() {
         if(this.config.uploadContainer){
+            let self = this; 
             this.config.uploadContainer.addEventListener('click', function(){
-                document.getElementById(this.BrowseID).click();
+                document.getElementById(self.BrowseID).click();
             });
             if(this.config.draggable){
                 this.config.uploadContainer.addEventListener("dragover", (event)=>{
