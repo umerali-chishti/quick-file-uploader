@@ -1,10 +1,11 @@
 {
   "name": "quick-file-uploader",
-  "version": "1.0.10",
-  "description": "Quick file uploader for s3, html form submission and XMLHttpRequest",
+  "version": "1.0.11",
+  "description": "Quick file uploader for s3, html form submission",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "keywords": [
     "s3",
@@ -16,5 +17,13 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.1240.0"
+  },
+  "devDependencies": {
+    "babel-loader": "^9.0.0",
+    "css-loader": "^6.7.1",
+    "sass-loader": "^13.1.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
   }
 }
