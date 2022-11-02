@@ -8,7 +8,9 @@ class Upload {
      */
     constructor(config={}) {
         this.config = {};
-        this.config.uploadContainer = document.getElementById(config.container || 'upload-container');
+        this.ID = config.container || 'upload-container';
+        this.BrowseID = this.ID+'__browse';
+        this.config.uploadContainer = document.getElementById(this.ID);
         if(!this.config.uploadContainer){
             console.log('Container not found!');
             return false;
@@ -48,7 +50,7 @@ class Upload {
     events() {
         if(this.config.uploadContainer){
             this.config.uploadContainer.addEventListener('click', function(){
-                document.getElementById('uploader').click();
+                document.getElementById(this.BrowseID).click();
             });
             if(this.config.draggable){
                 this.config.uploadContainer.addEventListener("dragover", (event)=>{
@@ -189,9 +191,9 @@ class Upload {
 
         this.config.uploadContainer.insertAdjacentHTML(
             'afterend',
-            hiddenInput+'<input type="file" id="uploader" '+localInputName+' hidden '+multiple+' accept="'+this.config.accept+'"/>' + previewContainer
+            hiddenInput+'<input type="file" id="'+this.BrowseID+'" '+localInputName+' hidden '+multiple+' accept="'+this.config.accept+'"/>' + previewContainer
         );
-        document.getElementById('uploader').addEventListener('change', this.uploaderElClick.bind(this));
+        document.getElementById(this.BrowseID).addEventListener('change', this.uploaderElClick.bind(this));
     }
 
     addInput(value, fileNumber){
@@ -212,7 +214,7 @@ class Upload {
         if(this.config.uploadContainer.dataset.dragged){
             this.config.uploadContainer.dataset.dragged = '';
             this.config.uploadContainer.removeAttribute('data-dragged');
-              self = document.getElementById('uploader');
+              self = document.getElementById(this.BrowseID);
         }
         ([...this.files]).forEach((obj,i) => {
             let number = this.dT.items.length;
