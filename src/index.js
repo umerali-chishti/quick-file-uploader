@@ -232,7 +232,7 @@ class Upload {
         let regex = new RegExp("(.*?)\.("+this.config.mimeTypes+")$");
         if (!(regex.test(file.name))) {
             hasError = true;
-            errors.push('Allowed file types are '+this.config.mimeTypes.split('|').join(', '));
+            errors.push('Allowed file type are '+this.config.mimeTypes.split('|').join(', '));
         }
         if(file.size > this.config.size){
             hasError = true;
