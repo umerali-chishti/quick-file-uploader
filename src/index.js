@@ -262,4 +262,4 @@ class Upload {
 
 }
 
-export default Upload;pload;
+export default Upload;
