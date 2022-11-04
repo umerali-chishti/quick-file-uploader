@@ -1,6 +1,6 @@
 {
   "name": "quick-file-uploader",
-  "version": "1.0.12",
+  "version": "1.0.16",
   "description": "Quick file uploader for s3, html form submission",
   "main": "src/index.js",
   "scripts": {
