@@ -15,10 +15,10 @@ class Upload {
             console.log('Container not found!');
             return false;
         }
-        Lthis.config.storage = config.storage || 'local'
-        Lthis.config.preview = config.preview || Lthis.preview;
-        Lthis.config.mimeTypes = config['mime-types'] || 'jpg|jpeg|png|pdf|svg|mp4|3gp|mov|avi|wmv';
-        Lthis.config.accept = config.accept || 'image/*,video/*,application/pdf'
+        this.config.storage = config.storage || 'local'
+        this.config.preview = config.preview || this.preview;
+        this.config.mimeTypes = config['mime-types'] || 'jpg|jpeg|png|pdf|svg|mp4|3gp|mov|avi|wmv';
+        this.config.accept = config.accept || 'image/*,video/*,application/pdf'
         this.config.size = config.size || (1024 * 2000);
         this.config.error = config.error || this.errorMessage;
         this.config.success = config.success || this.successMessage;
@@ -51,7 +51,7 @@ class Upload {
         if(this.config.uploadContainer){
             let self = this; 
             this.config.uploadContainer.addEventListener('click', function(){
-                document.getElementById(this.BrowseID).click();
+                document.getElementById(self.BrowseID).click();
             });
             if(this.config.draggable){
                 this.config.uploadContainer.addEventListener("dragover", (event)=>{
@@ -262,4 +262,4 @@ class Upload {
 
 }
 
-export default Upload;
+export default Upload;pload;
