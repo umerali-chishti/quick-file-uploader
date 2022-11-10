@@ -1,2 +1,2 @@
 import Upload from "./src/index.js"
-new Upload();
+new Upload({multiple:true,size:(1024 * 10000)});
