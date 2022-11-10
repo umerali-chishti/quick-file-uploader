@@ -6,6 +6,10 @@
 
 > Quick file uploader for s3, html form submission
 
+## Demo
+
+[https://quick-file-uploader.netlify.app](https://quick-file-uploader.netlify.app/)
+
 ## Prerequisites
 
 This project requires NodeJS (version 8 or later) and NPM.

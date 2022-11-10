@@ -36,6 +36,7 @@ class Upload {
         this.uploadProgress = [];
         this.dT = new DataTransfer();
         this.config.dT = this.dT;
+        this.config.BrowseID = this.BrowseID;
         this.isCustomPreview = (config.preview) ? true : false;
         this.init();
         // return this.removeFile;
@@ -75,6 +76,7 @@ class Upload {
         a.innerText = "Remove Image";
         a.classList.add('remove-poster')
         a.dataset.id = i
+        a.href = "javascript:;"
         a.addEventListener("click", this.removePoster.bind(this))
         if(type == 'image'){
             const img = document.createElement('img')
@@ -111,13 +113,12 @@ class Upload {
         let itemNumber = null;
         document.querySelectorAll('.poster-wrapper').forEach((obj,i) => {
             let removeLink = obj.querySelector('.remove-poster');
-            if(removeLink.dataset.id > id){
-                removeLink.dataset.id = removeLink.dataset.id - 1
-            }
             if(removeLink.dataset.id == id){
                 itemNumber = obj;
             }
-
+            if(removeLink.dataset.id > id){
+                removeLink.dataset.id = removeLink.dataset.id - 1
+            }
         })
         itemNumber.remove();
         let fileInput = document.getElementById('file__'+id)
@@ -129,7 +130,7 @@ class Upload {
 
     removeFile(id){
         this.dT.items.remove(id)
-        document.getElementById('uploader').files = this.dT.files
+        document.getElementById(this.BrowseID).files = this.dT.files
     }
 
     progressBar(progress, fileNumber = 0){
