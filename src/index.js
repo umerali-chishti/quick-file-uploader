@@ -1,5 +1,7 @@
-import S3UPLOAD from './s3Upload.js';
 import './style.css';
+import Api from './adapters/Api.js';
+import Local from './adapters/Local.js';
+import S3 from './adapters/S3.js';
 
 
 class Upload {
@@ -16,6 +18,7 @@ class Upload {
             return false;
         }
         this.config.storage = config.storage || 'local'
+        this.config.headers = config.headers || {}
         this.config.preview = config.preview || this.preview;
         this.config.mimeTypes = config['mime-types'] || 'jpg|jpeg|png|pdf|svg|mp4|3gp|mov|avi|wmv';
         this.config.accept = config.accept || 'image/*,video/*,application/pdf'
@@ -50,22 +53,22 @@ class Upload {
 
     events() {
         if(this.config.uploadContainer){
-            let self = this; 
+            let self = this;
             this.config.uploadContainer.addEventListener('click', function(){
                 document.getElementById(self.BrowseID).click();
             });
             if(this.config.draggable){
                 this.config.uploadContainer.addEventListener("dragover", (event)=>{
-                  event.preventDefault();
-                  this.config.uploadContainer.dataset.dragged = true;
-                  this.config.onDrag();
+                    event.preventDefault();
+                    this.config.uploadContainer.dataset.dragged = true;
+                    this.config.onDrag();
                 });
                 this.config.uploadContainer.addEventListener("dragleave", ()=>{
-                  this.config.uploadContainer.dataset.dragged = '';
-                  this.config.uploadContainer.removeAttribute('data-dragged');
-                  this.config.onDrop();
+                    this.config.uploadContainer.dataset.dragged = '';
+                    this.config.uploadContainer.removeAttribute('data-dragged');
+                    this.config.onDrop();
                 });
-                this.config.uploadContainer.addEventListener("drop", this.uploaderElClick.bind(this)); 
+                this.config.uploadContainer.addEventListener("drop", this.uploaderElClick.bind(this));
             }
         }
     }
@@ -78,13 +81,13 @@ class Upload {
         a.dataset.id = i
         a.href = "javascript:;"
         a.addEventListener("click", this.removePoster.bind(this))
-        if(type == 'image'){
+        if(type === 'image'){
             const img = document.createElement('img')
             img.src = src
             img.classList.add('poster-image')
             div.appendChild(img);
         }
-        if(type == 'video'){
+        if(type === 'video'){
             const video = document.createElement('video')
             video.controls = true;
             video.classList.add('poster-video')
@@ -95,7 +98,7 @@ class Upload {
             video.load();
             // video.play();
         }
-        if(type == 'application/pdf'){
+        if(type === 'application/pdf'){
             const link = document.createElement('a')
             link.src = src
             link.innerText = 'PDF File'
@@ -161,16 +164,16 @@ class Upload {
     }
 
     getFileType(file) {
-      if(file.type.match('image.*')){
-        return 'image'
-      }
-      if(file.type.match('video.*')){
-        return 'video';
-      }
-      if(file.type.match('audio.*')){
-        return 'audio';
-      }
-      return file.type;
+        if(file.type.match('image.*')){
+            return 'image'
+        }
+        if(file.type.match('video.*')){
+            return 'video';
+        }
+        if(file.type.match('audio.*')){
+            return 'audio';
+        }
+        return file.type;
     }
 
     randerContainer(){
@@ -178,7 +181,7 @@ class Upload {
         let previewContainer = '';
         let multiple = (this.config.multiple)? 'multiple' :'';
         let localInputName = 'name='+this.config.hiddenInputName;
-        if(this.config.storage == 's3'){
+        if(this.config.storage === 's3' || this.config.storage === 'api'){
             if(!this.config.multiple){
                 let editInput = document.querySelector('input[name="'+this.config.hiddenInputName+'"]')
                 let editValue = (editInput)? editInput.value :'';
@@ -200,6 +203,8 @@ class Upload {
 
     addInput(value, fileNumber){
         if(!this.config.multiple){
+            console.log(this.config);
+            console.log(this.config.hiddenInputName);
             document.querySelector('input[name="'+this.config.hiddenInputName+'"]').value = value;
             return true;
         }
@@ -208,57 +213,56 @@ class Upload {
             '<input type="hidden" id="file__'+fileNumber+'" name='+this.config.hiddenInputName+' value="'+value+'">'
         );
     }
-    
+
     uploaderElClick(event){
         event.preventDefault();
         let self = event.target;
-         this.files = self.files || event.dataTransfer.files;
+        this.files = self.files || event.dataTransfer.files;
         if(this.config.uploadContainer.dataset.dragged){
             this.config.uploadContainer.dataset.dragged = '';
             this.config.uploadContainer.removeAttribute('data-dragged');
-              self = document.getElementById(this.BrowseID);
+            self = document.getElementById(this.BrowseID);
         }
-        ([...this.files]).forEach((obj,i) => {
+        ([...this.files]).forEach(async (obj,i) => {
             let number = this.dT.items.length;
-            if(this.uploadFile(obj, number)){
+            if(await this.uploadFile(obj, number)){
                 this.dT.items.add(obj)
             }
         });
         self.files = this.dT.files
     }
-    uploadFile(file, fileNumber){
+    async uploadFile(file, fileNumber) {
         let $this = this
         let hasError = false;
         let errors = [];
-        let regex = new RegExp("(.*?)\.("+this.config.mimeTypes+")$");
+        let regex = new RegExp("(.*?)\.(" + this.config.mimeTypes + ")$");
         if (!(regex.test(file.name))) {
             hasError = true;
-            errors.push('Allowed file type are '+this.config.mimeTypes.split('|').join(', '));
+            errors.push('Allowed file type are ' + this.config.mimeTypes.split('|').join(', '));
         }
-        if(file.size > this.config.size){
+        if (file.size > this.config.size) {
             hasError = true;
-            errors.push('File size should not be greater than '+ this.formatBytes(this.config.size));
+            errors.push('File size should not be greater than ' + this.formatBytes(this.config.size));
         }
-        if(hasError){
+        if (hasError) {
             this.config.error(errors, fileNumber);
             return false;
         }
         this.uploadProgress.push(0);
-        if(this.config.storage == 's3'){
-           new S3UPLOAD().file(file, fileNumber, this);
+        const adapters = {
+            's3': S3,
+            'api': Api,
+            'local': Local
+        };
+
+        const selectedAdapter = adapters[this.config.storage];
+        if (selectedAdapter === undefined) {
+            errors.push('No adapter found for your storage system' + this.config.storage);
+            this.config.error(errors, fileNumber)
+            return false;
         }
-        if(this.config.storage == 'local'){
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                $this.config.preview(e.target.result, $this.getFileType(file), fileNumber);
-            };
-            reader.onprogress = function (e) {
-                $this.uploadProgress[fileNumber] = Math.round((e.loaded * 100) / e.total);
-                $this.config.progress($this.uploadProgress[fileNumber], fileNumber);
-            };
-            reader.readAsDataURL(file);
-        }
-        return true;
+
+        return await (new selectedAdapter(this.config)).file(file, fileNumber, this);
     }
 
 }

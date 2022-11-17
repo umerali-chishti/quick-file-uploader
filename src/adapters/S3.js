@@ -1,8 +1,8 @@
-import S3 from 'aws-sdk/clients/s3';
+import S3sdk from 'aws-sdk/clients/s3';
 
-class S3Upload {
+class S3 {
 	constructor() {
-        this.bucket = new S3({
+        this.bucket = new S3sdk({
             accessKeyId: credentials.AWS_ACCESS_KEY_ID,
             secretAccessKey: credentials.AWS_SECRET_ACCESS_KEY,
             region: credentials.AWS_DEFAULT_REGION,
@@ -18,7 +18,7 @@ class S3Upload {
             ACL: 'public-read',
             ContentType: file.type
         }
-        return this.bucket.upload(params, function(err, data) {
+        this.bucket.upload(params, function(err, data) {
             if (err) {
                 object.config.error(['There was an error uploading your file: '+err], fileNumber);
                 return false;
@@ -33,7 +33,8 @@ class S3Upload {
             object.config.progress(object.uploadProgress[fileNumber], fileNumber);
             console.log(object.uploadProgress[fileNumber], fileNumber);
         })
+        return true;
     }
 
 }
-export default S3Upload;
+export default S3;

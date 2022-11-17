@@ -66,12 +66,25 @@ you can customise file input, preview, error and success messages base on your d
        AWS_SECRET_ACCESS_KEY:'xxxxxxx',
        AWS_DEFAULT_REGION:'xxxxxxx',
        AWS_BUCKET:'xxxxxxx',
-     }
+    }
      ```
 2) Now,  import upload class and initialize:
      ```js
-    import  Upload from 'quick-file-uploader'
+    import Upload from 'quick-file-uploader'
     new Upload({storage: 's3'});
+
+### Upload file on server through api
+
+1) define s3 credentials before initialize
+    ```js
+    window.credentials = {
+       UPLOAD_URL: 'xxxxxxx'
+    }
+     ```
+2) Now,  import upload class and initialize:
+     ```js
+    import Upload from 'quick-file-uploader'
+    new Upload({storage: 'api', headers: {'Authorization': 'TOKEN'}});
 
 ## License
 
