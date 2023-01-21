@@ -265,6 +265,25 @@ class Upload {
         return await (new selectedAdapter(this.config)).file(file, fileNumber, this);
     }
 
+    static async customUpload(file, fileNumber, object) {
+        let errors = [];
+
+        const adapters = {
+            's3': S3,
+            'api': Api,
+            'local': Local
+        };
+
+        const selectedAdapter = adapters[object.storage];
+        if (selectedAdapter === undefined) {
+            errors.push('No adapter found for your storage system' + this.config.storage);
+            object.error(errors, fileNumber)
+            return false;
+        }
+
+        return await (new selectedAdapter()).file(file, fileNumber, object);
+    }
+
 }
 
 export default Upload;
